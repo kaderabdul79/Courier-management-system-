@@ -19,7 +19,7 @@ async function run() {
       await client.connect();
       const database = client.db("apartment");
       const scheduleCollection = database.collection("schedule");
-      const userCollection = database.collection("user");
+      const usersCollection = database.collection("user");
 
     // collect data from body and create post api to insert data for schedule
     app.post('/schedules', async (req, res) => {
@@ -42,10 +42,20 @@ async function run() {
     // insert data for user it'll called from useFirebase under userRegistration function
     app.post('/users', async (req, res) => {
     const user = req.body;
-    const result = await userCollection.insertOne(user);
+    const result = await usersCollection.insertOne(user);
     // console.log(result);
     res.json(result)
     })
+
+    // this api'll call under the usingGoogleSignin function, if user are new try to login then insert data if exists just he'll login
+    app.put('/users', async (req, res) => {
+        const user = req.body;
+        const filter = { email: user.email };
+        const options = { upsert: true };
+        const updateDoc = { $set: user };
+        const result = await usersCollection.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
   
     } finally {
     //   await client.close();
