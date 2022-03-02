@@ -1,11 +1,12 @@
 const express = require('express')
 const app = express()
 const cors = require('cors');
+require('dotenv').config();
 const admin = require("firebase-admin");
 const { MongoClient } = require('mongodb');
 const fileupload = require('express-fileupload')
 const ObjectId = require('mongodb').ObjectId;
-const port = 5000
+const port = process.env.PORT || 5000
 
 // use middleware and parse data
 app.use(cors());
@@ -21,7 +22,7 @@ admin.initializeApp({
 });
 
 
-const uri = "mongodb+srv://apartment:sai1eFqglF3FEUoL@cluster0.vxcvn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.vxcvn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 // const uri = `mongodb+srv://apartment:sai1eFqglF3FEUoL@cluster0.swu9d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
