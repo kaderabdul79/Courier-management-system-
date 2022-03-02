@@ -146,6 +146,13 @@ app.post('/apartments', async (req, res) => {
   res.json(result);
 })
 
+  // fetch all apartments data
+  app.get('/apartments', async (req, res) => {
+    const cursor = apartmentInfoCollection.find({});
+    const apartments = await cursor.toArray();
+    res.send(apartments);
+  })
+
 
     } finally {
     //   await client.close();
