@@ -4,6 +4,7 @@ const cors = require('cors');
 const admin = require("firebase-admin");
 const { MongoClient } = require('mongodb');
 const fileupload = require('express-fileupload')
+const ObjectId = require('mongodb').ObjectId;
 const port = 5000
 
 // use middleware and parse data
@@ -152,6 +153,14 @@ app.post('/apartments', async (req, res) => {
     const apartments = await cursor.toArray();
     res.send(apartments);
   })
+  // get a single apartment data 
+  app.get('/apartments/:id', async (req, res) => {
+    const id = req.params.id;
+    // console.log(id)
+    const query = { _id: ObjectId(id) };
+    const apartment = await apartmentInfoCollection.findOne(query);
+    res.send(apartment);
+  });
 
 
     } finally {
