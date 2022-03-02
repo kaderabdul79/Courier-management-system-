@@ -50,12 +50,6 @@ async function run() {
       const contactInfoCollection = database.collection("contactInfo");
       const apartmentInfoCollection = database.collection("apartmentInfo");
 
-      app.post('/apartments', async (req, res) => {
-        const apartment = req.body;
-        const image = req.files;
-        console.log(apartment,image);
-    })
-
     // collect data from body and create post api to insert data for schedule
     app.post('/schedules', async (req, res) => {
         const schedule = req.body;
@@ -130,6 +124,28 @@ async function run() {
     console.log(result);
     res.json(result)
 })
+
+// insert apartments Info
+app.post('/apartments', async (req, res) => {
+  // const apartment = req.body;
+  // const image = req.files;
+  const description = req.body.description;
+  const title = req.body.title;
+  const subtextarea = req.body.subtextarea;
+  const image = req.files.image;
+  const imageData = image.data;
+  const encodedimage = imageData.toString('base64');
+  const imageBuffer = Buffer.from(encodedimage, 'base64');
+  const apartment = {
+      title,
+      description,
+      subtextarea,
+      image: imageBuffer
+  }
+  const result = await apartmentInfoCollection.insertOne(apartment);
+  res.json(result);
+})
+
 
     } finally {
     //   await client.close();
