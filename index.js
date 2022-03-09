@@ -106,7 +106,7 @@ async function run() {
           res.status(403).json({ message: 'you do not have access to make admin' })
       }
   });
-
+ 
   //     
   app.get('/users/:email', async (req, res) => {
         const email = req.params.email;
@@ -170,7 +170,10 @@ app.post('/apartments', async (req, res) => {
   }
   run().catch(console.dir);
 
-
+// 
+app.get('/', (req, res) => {
+  res.send("Alright the backend apartment server");
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
